@@ -4,6 +4,7 @@ import * as createError from 'http-errors';
 import * as cookieParser from "cookie-parser";
 import * as websocket from "ws";
 import * as http from "http";
+import {AddressInfo} from "ws";
 
 const app = express();
 
@@ -22,5 +23,8 @@ wss.on('connection', (ws: websocket) => {
 });
 
 server.listen(process.env.PORT, () => {
-    console.log(`Server started on port: ${server.address()}`);
+    const port: any = server.address();
+    if ("port" in port) {
+        console.log(`PORT::: ${port.port}`);
+    }
 });

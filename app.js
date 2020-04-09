@@ -14,6 +14,9 @@ wss.on('connection', (ws) => {
     ws.send("Successfully connected to the websocket");
 });
 server.listen(process.env.PORT, () => {
-    console.log(`Server started on port: ${server.address()}`);
+    const port = server.address();
+    if ("port" in port) {
+        console.log(`PORT::: ${port.port}`);
+    }
 });
 //# sourceMappingURL=app.js.map
