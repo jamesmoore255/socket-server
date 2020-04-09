@@ -1,0 +1,29 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "lib": [
+      "es2018"
+    ],
+    "target": "es2018",
+    "noImplicitAny": true,
+    "stripInternal": true,
+    "inlineSources": false,
+    "inlineSourceMap": false,
+    "forceConsistentCasingInFileNames": true,
+    "strictNullChecks": false,
+    "skipLibCheck": true,
+    "alwaysStrict": false,
+    "charset": "utf8",
+    "module": "commonjs",
+    "moduleResolution": "Node",
+    "newLine": "LF",
+    "pretty": true,
+    "sourceMap": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+  },
+  "exclude": [
+    "**/node_modules/**"
+  ]
+}
