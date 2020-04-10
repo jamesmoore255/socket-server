@@ -1,21 +1,33 @@
-import * as express from 'express';
+import * as express from "express";
 import * as websocket from "ws";
 import * as http from "http";
+import * as IO from "socket.io";
 
 const app = express();
 
 const server = http.createServer(app);
 
-const wss = new websocket.Server({server});
+const io = IO.listen(server);
 
-wss.on('connection', (ws: websocket, headers) => {
-    ws.on('message', (message: string) => {
-        console.log('received:', message);
-
-        ws.send(`G'day: ${headers}`);
+io.sockets.on('connection', (socket) => {
+    socket.on('group', (groupId) => {
+        socket.join(groupId);
+        socket.emit('joinedGroup', 'SERVER', 'You have connected to group');
+        socket.broadcast.to(groupId).emit('updateChat', 'SERVER', 'JAMES CONNECTED')
     });
 
-    ws.send(`Successfully connected to the websocket, ${headers}`);
+    socket.on('sendThread', (data) => {
+        // we tell the client to execute 'updatechat' with 2 parameters
+        io.sockets.in(data.groupId).emit('newThread', data);
+    });
+
+    // when the user disconnects.. perform this
+    socket.on('disconnect', (data) => {
+        // remove the username from global usernames list
+        // echo globally that this client has left
+        socket.broadcast.emit('updatechat', 'SERVER', data.uid + ' has disconnected');
+        socket.leave(data.groupId);
+    });
 });
 
 server.listen(process.env.PORT, () => {
