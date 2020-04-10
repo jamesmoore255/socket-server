@@ -34,7 +34,7 @@ io.on('connection', (socket) => {
     });
 });
 
-server.listen(80, () => {
+server.listen(process.env.port, () => {
     const port: any = server.address();
     if ("port" in port) {
         console.log(`PORT::: ${port.port}`);
