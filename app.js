@@ -6,12 +6,12 @@ const http = require("http");
 const app = express();
 const server = http.createServer(app);
 const wss = new websocket.Server({ server });
-wss.on('connection', (ws) => {
+wss.on('connection', (ws, headers) => {
     ws.on('message', (message) => {
         console.log('received:', message);
-        ws.send(`G'day: ${message}`);
+        ws.send(`G'day: ${headers}`);
     });
-    ws.send("Successfully connected to the websocket");
+    ws.send(`Successfully connected to the websocket, ${headers}`);
 });
 server.listen(process.env.PORT, () => {
     const port = server.address();

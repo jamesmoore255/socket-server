@@ -1,10 +1,6 @@
-import * as path from 'path';
 import * as express from 'express';
-import * as createError from 'http-errors';
-import * as cookieParser from "cookie-parser";
 import * as websocket from "ws";
 import * as http from "http";
-import {AddressInfo} from "ws";
 
 const app = express();
 
@@ -12,14 +8,14 @@ const server = http.createServer(app);
 
 const wss = new websocket.Server({server});
 
-wss.on('connection', (ws: websocket) => {
+wss.on('connection', (ws: websocket, headers) => {
     ws.on('message', (message: string) => {
         console.log('received:', message);
 
-        ws.send(`G'day: ${message}`);
+        ws.send(`G'day: ${headers}`);
     });
 
-    ws.send("Successfully connected to the websocket");
+    ws.send(`Successfully connected to the websocket, ${headers}`);
 });
 
 server.listen(process.env.PORT, () => {
