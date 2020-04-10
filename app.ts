@@ -1,5 +1,4 @@
 import * as express from "express";
-import * as websocket from "ws";
 import * as http from "http";
 import * as IO from "socket.io";
 
@@ -9,7 +8,9 @@ const server = http.createServer(app);
 
 const io = IO.listen(server);
 
-io.sockets.on('connection', (socket) => {
+io.on('connection', (socket) => {
+    socket.emit('chat', 'NEW CHAT MESSAGE');
+    console.log('connection');
     socket.on('group', (groupId) => {
         socket.join(groupId);
         socket.emit('joinedGroup', 'SERVER', 'You have connected to group');
