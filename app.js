@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
         socket.leave(data.groupId);
     });
 });
-server.listen(process.env.PORT, () => {
+server.listen(3210, () => {
     const port = server.address();
     if ("port" in port) {
         console.log(`PORT::: ${port.port}`);
