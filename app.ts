@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
     res.send('<h1>Hello world</h1>');
 });
 
-const io = IO.listen(server);
+const io = IO(server);
 
 io.on('connection', (socket) => {
     socket.emit('chat', 'NEW CHAT MESSAGE');
@@ -20,7 +20,6 @@ io.on('connection', (socket) => {
         socket.emit('joinedGroup', 'SERVER', 'You have connected to group');
         socket.broadcast.to(groupId).emit('updateChat', 'SERVER', 'JAMES CONNECTED')
     });
-
     socket.on('sendThread', (data) => {
         // we tell the client to execute 'updatechat' with 2 parameters
         io.sockets.in(data.groupId).emit('newThread', data);
