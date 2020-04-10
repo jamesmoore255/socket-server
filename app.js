@@ -4,7 +4,7 @@ const express = require("express");
 const http = require("http");
 const IO = require("socket.io");
 const app = express();
-const server = http.createServer();
+const server = http.createServer(app);
 app.get('/', (req, res) => {
     res.send('<h1>Hello world</h1>');
 });

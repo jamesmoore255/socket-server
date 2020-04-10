@@ -4,7 +4,7 @@ import * as IO from "socket.io";
 
 const app = express();
 
-const server = http.createServer();
+const server = http.createServer(app);
 
 app.get('/', (req, res) => {
     res.send('<h1>Hello world</h1>');
