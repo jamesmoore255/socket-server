@@ -4,7 +4,10 @@ const express = require("express");
 const http = require("http");
 const IO = require("socket.io");
 const app = express();
-const server = http.createServer(app);
+const server = http.createServer();
+app.get('/', (req, res) => {
+    res.send('<h1>Hello world</h1>');
+});
 const io = IO.listen(server);
 io.on('connection', (socket) => {
     socket.emit('chat', 'NEW CHAT MESSAGE');
