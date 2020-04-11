@@ -13,6 +13,10 @@ app.get('/', (req, res) => {
     res.send('<h1>Hello world</h1>');
 });
 const io = socket(server);
+app.post("/sendThread/:groupId", ((req, res) => {
+    io.sockets.in(req.params.groupId).emit('updateChat', `${req.params.groupId} NEW MESSAGE`);
+    res.send('SUCCESS');
+}));
 io.on('connection', (socket) => {
     console.log('SOCKET CONNECTION');
     // socket.emit('chat', 'NEW CHAT MESSAGE');
@@ -29,7 +33,7 @@ io.on('connection', (socket) => {
     socket.on('sendThread', (groupId) => {
         console.log('GROUP SENDTHREAD:', groupId);
         // we tell the client to execute 'updatechat' with 2 parameters
-        io.sockets.in(groupId).emit('updateChat', 'GROUP_ID_NEW_MESSAGE');
+        io.sockets.in(groupId).emit('updateChat', `${groupId}: NEW MESSAGE`);
     });
     // when the user disconnects.. perform this
     socket.on('disconnect', (data) => {
