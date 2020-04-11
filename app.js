@@ -15,15 +15,21 @@ app.get('/', (req, res) => {
 const io = socket(server);
 io.on('connection', (socket) => {
     console.log('SOCKET CONNECTION');
-    socket.emit('chat', 'NEW CHAT MESSAGE');
+    // socket.emit('chat', 'NEW CHAT MESSAGE');
     socket.on('group', (groupId) => {
-        socket.join(groupId);
-        socket.emit('joinedGroup', 'SERVER', 'You have connected to group');
-        socket.broadcast.to(groupId).emit('updateChat', 'SERVER', 'JAMES CONNECTED');
+        console.log(`GROUPID: ${groupId}`);
+        try {
+            socket.join(groupId);
+            // socket.emit('joinedGroup', 'SERVER', `You have connected to ${groupId}`);
+        }
+        catch (e) {
+            console.warn(e);
+        }
     });
-    socket.on('sendThread', (data) => {
+    socket.on('sendThread', (groupId) => {
+        console.log('GROUP SENDTHREAD:', groupId);
         // we tell the client to execute 'updatechat' with 2 parameters
-        io.sockets.in(data.groupId).emit('newThread', data);
+        io.sockets.in(groupId).emit('updateChat', 'GROUP_ID_NEW_MESSAGE');
     });
     // when the user disconnects.. perform this
     socket.on('disconnect', (data) => {
