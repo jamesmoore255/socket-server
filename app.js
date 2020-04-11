@@ -8,7 +8,7 @@ const server = http.createServer(app);
 app.get('/', (req, res) => {
     res.send('<h1>Hello world</h1>');
 });
-const io = IO(server);
+const io = IO.listen(server);
 io.on('connection', (socket) => {
     socket.emit('chat', 'NEW CHAT MESSAGE');
     console.log('connection');
