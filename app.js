@@ -1,17 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
-const http = require("http");
-const IO = require("socket.io");
+const socket = require("socket.io");
 const app = express();
-const server = http.createServer(app);
+const server = app.listen(3210, () => {
+    const port = server.address();
+    if ("port" in port) {
+        console.log(`PORT::: ${port.port}`);
+    }
+});
 app.get('/', (req, res) => {
     res.send('<h1>Hello world</h1>');
 });
-const io = IO.listen(server);
+const io = socket(server);
 io.on('connection', (socket) => {
+    console.log('SOCKET CONNECTION');
     socket.emit('chat', 'NEW CHAT MESSAGE');
-    console.log('connection');
     socket.on('group', (groupId) => {
         socket.join(groupId);
         socket.emit('joinedGroup', 'SERVER', 'You have connected to group');
@@ -28,11 +32,5 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('updatechat', 'SERVER', data.uid + ' has disconnected');
         socket.leave(data.groupId);
     });
-});
-server.listen(80, () => {
-    const port = server.address();
-    if ("port" in port) {
-        console.log(`PORT::: ${port.port}`);
-    }
 });
 //# sourceMappingURL=app.js.map

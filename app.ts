@@ -1,20 +1,24 @@
 import * as express from "express";
-import * as http from "http";
-import * as IO from "socket.io";
+import * as socket from "socket.io";
 
 const app = express();
 
-const server = http.createServer(app);
+const server = app.listen(3210, () => {
+    const port: any = server.address();
+    if ("port" in port) {
+        console.log(`PORT::: ${port.port}`);
+    }
+});
 
 app.get('/', (req, res) => {
     res.send('<h1>Hello world</h1>');
 });
 
-const io = IO.listen(server);
+const io = socket(server);
 
 io.on('connection', (socket) => {
+    console.log('SOCKET CONNECTION');
     socket.emit('chat', 'NEW CHAT MESSAGE');
-    console.log('connection');
     socket.on('group', (groupId) => {
         socket.join(groupId);
         socket.emit('joinedGroup', 'SERVER', 'You have connected to group');
@@ -34,9 +38,3 @@ io.on('connection', (socket) => {
     });
 });
 
-server.listen(80, () => {
-    const port: any = server.address();
-    if ("port" in port) {
-        console.log(`PORT::: ${port.port}`);
-    }
-});
