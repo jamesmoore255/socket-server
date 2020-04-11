@@ -14,6 +14,7 @@ app.get('/', (req, res) => {
 });
 const io = socket(server);
 app.post("/sendThread/:groupId", ((req, res) => {
+    console.log(`POST:: ${req.params.groupId}`);
     io.sockets.in(req.params.groupId).emit('updateChat', `${req.params.groupId} NEW MESSAGE`);
     res.send('SUCCESS');
 }));
